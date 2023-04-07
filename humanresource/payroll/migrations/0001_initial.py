@@ -5,13 +5,14 @@ import django.db.models.deletion
 import phonenumber_field.modelfields
 
 
+# Database Table Migration
 class Migration(migrations.Migration):
 
     initial = True
 
     dependencies = [
     ]
-
+    # JobTitle Table Fields Config.
     operations = [
         migrations.CreateModel(
             name='JobTitle',
@@ -21,6 +22,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, null=True)),
             ],
         ),
+    # Employee Table Fields Config.
         migrations.CreateModel(
             name='Employee',
             fields=[
