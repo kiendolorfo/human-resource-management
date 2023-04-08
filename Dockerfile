@@ -18,6 +18,7 @@ RUN apt-get update \
         python3-dev \
         python3-pip \
         gcc \
+        git \
         build-essential \
     && rm -rf /var/lib/apt/lists/*
 
