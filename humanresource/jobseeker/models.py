@@ -47,3 +47,12 @@ class JobSeeker(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+class EducationBackground(models.Model):
+    jobseeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
+    degree = models.CharField(max_length=100)
+    field_of_study = models.CharField(max_length=100)
+    school = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_current = models.BooleanField(default=False)
