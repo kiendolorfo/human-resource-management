@@ -1,13 +1,14 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-# Create your models here.
+class Gender(models.Model):
+    name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name
+
 class JobSeeker(models.Model):
-    GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other'),
-    ]
     MARITAL_STATUS_CHOICES = [
         ('S', 'Single'),
         ('M', 'Married'),
@@ -20,15 +21,23 @@ class JobSeeker(models.Model):
         ('UG', 'Undergraduate'),
         ('PG', 'Postgraduate'),
     ]
+    EXPERIENCE_LEVEL_CHOICES = [
+        ('0-1', '0-1 years'),
+        ('1-2', '1-2 years'),
+        ('2-3', '2-3 years'),
+        ('3-5', '3-5 years'),
+        ('5+', '5+ years'),
+    ]
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, unique=True)
     phone_number = PhoneNumberField(region='PH')
     date_of_birth = models.DateField()
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
     marital_status = models.CharField(max_length=1, choices=MARITAL_STATUS_CHOICES)
     education_level = models.CharField(max_length=2, choices=EDUCATION_LEVEL_CHOICES)
+    experience_level = models.CharField(max_length=3, choices=EXPERIENCE_LEVEL_CHOICES)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
