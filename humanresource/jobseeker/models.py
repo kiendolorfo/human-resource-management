@@ -21,22 +21,15 @@ class EducationLevel(models.Model):
     
     def __str__(self):
         return self.name
+    
+class ExperienceLevel(models.Model):
+    name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name
 
 class JobSeeker(models.Model):
-    EDUCATION_LEVEL_CHOICES = [
-        ('HS', 'High School'),
-        ('CL', 'College'),
-        ('UG', 'Undergraduate'),
-        ('PG', 'Postgraduate'),
-    ]
-    EXPERIENCE_LEVEL_CHOICES = [
-        ('0-1', '0-1 years'),
-        ('1-2', '1-2 years'),
-        ('2-3', '2-3 years'),
-        ('3-5', '3-5 years'),
-        ('5+', '5+ years'),
-    ]
-
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254, unique=True)
@@ -45,7 +38,7 @@ class JobSeeker(models.Model):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
     marital_status = models.ForeignKey(MaritalStatus, on_delete=models.CASCADE)
     education_level = models.ForeignKey(EducationLevel, on_delete=models.CASCADE)
-    experience_level = models.CharField(max_length=3, choices=EXPERIENCE_LEVEL_CHOICES)
+    experience_level = models.ForeignKey(ExperienceLevel, on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
