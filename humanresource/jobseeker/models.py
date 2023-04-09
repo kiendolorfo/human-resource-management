@@ -14,14 +14,15 @@ class MaritalStatus(models.Model):
     
     def __str__(self):
         return self.name
+    
+class EducationLevel(models.Model):
+    name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name
 
 class JobSeeker(models.Model):
-    MARITAL_STATUS_CHOICES = [
-        ('S', 'Single'),
-        ('M', 'Married'),
-        ('W', 'Widowed'),
-        ('D', 'Divorced'),
-    ]
     EDUCATION_LEVEL_CHOICES = [
         ('HS', 'High School'),
         ('CL', 'College'),
@@ -43,7 +44,7 @@ class JobSeeker(models.Model):
     date_of_birth = models.DateField()
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
     marital_status = models.ForeignKey(MaritalStatus, on_delete=models.CASCADE)
-    education_level = models.CharField(max_length=2, choices=EDUCATION_LEVEL_CHOICES)
+    education_level = models.ForeignKey(EducationLevel, on_delete=models.CASCADE)
     experience_level = models.CharField(max_length=3, choices=EXPERIENCE_LEVEL_CHOICES)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
