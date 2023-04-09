@@ -1,0 +1,50 @@
+name: Build and Push Docker Image
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:14
+        restart: always
+        environment:
+          POSTGRES_USER: devtalks
+          POSTGRES_PASSWORD: devtalks123
+          POSTGRES_DB: hrm
+        volumes:
+          - db-data:/var/lib/postgresql/data/
+        ports:
+          - "5432:5432"
+        networks:
+          - backend
+      web:
+        build:
+          context: .
+          dockerfile: humanresource/Dockerfile
+        command: bash -c "python3 /app/manage.py makemigrations && python3 /app/manage.py migrate && python3 /app/manage.py runserver 0.0.0.0:8000"
+        volumes:
+          - .:/code
+        ports:
+          - "8000:8000"
+        depends_on:
+          - db
+        networks:
+          - backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Login to Docker registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker image
+        run: docker-compose build && docker-compose push
+volumes:
+  db-data:
+networks:
+  backend:
