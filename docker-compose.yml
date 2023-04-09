@@ -12,15 +12,22 @@ services:
       - db-data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+    networks:
+      - backend
   web:
     build: .
-    command: python3 /app/manage.py runserver 0.0.0.0:8000
+    command: bash -c "python3 /app/manage.py makemigrations && python3 /app/manage.py migrate && python3 /app/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - backend
 
 volumes:
   db-data:
+
+networks:
+  backend:
